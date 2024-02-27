@@ -1,0 +1,91 @@
+{
+    "picture": "Картинка",
+    "phone": "Номер телефона",
+    "search": "Поиск",
+    "status": "Статус",
+    "en": "EN",
+    "ru": "РУ",
+    "catalog": "Каталог",
+    "create": "Создать",
+    "cart": "Корзина",
+    "cabinet": "Кабинет",
+    "show_my_location": "Показать моё местоположение",
+    "send_blue_location": "Выбрать синию метку",
+    "send_red_location": "Выбрать красную метку",
+    "my_roll": "Мой ролл",
+    "no": "Нет",
+    "grams": "гр",
+    "sum": "сум",
+    "price": "Сумма",
+    "map": "Карта",
+    "id": "ID",
+    "date": "Дата",
+    "cost": "Цена",
+    "clear": "Очистить",
+    "delete": "Удалить",
+    "order": "Заказать",
+    "order_id": "Номер заказа",
+    "order_details": "Детали заказа",
+    "orders": "Заказы",
+    "my_orders": "Мои заказы",
+    "more": "Подробнее",
+    "main": "Главная",
+    "username": "Имя пользователя",
+    "password": "Пароль",
+    "logout": "Выйти",
+    "profile": "Профиль",
+    "shopping_cart": "Корзина",
+    "login": "Войти",
+    "register": "Регистрация",
+    "hello": "Привет",
+    "add": "Добавить",
+    "products": "Продукты",
+    "create_roll": "Создать ролл",
+    "name": "Название",
+    "quantity": "Количество",
+    "cover": "Покрытие",
+    "additional_cover": "Дополнительное покрытие",
+    "stuffing": "Начинка",
+    "form": "Форма",
+    "hat": "Шапка",
+    "pouring": "Поливка",
+    "covers": {
+        "nori": "Нори",
+        "salmon": "Лосось",
+        "eel": "Угорь",
+        "sesame": "Кунжут"
+    },
+    "additional_covers": {
+        "caviar": "Икра",
+        "mayonnaise": "Майонез",
+        "sesame": "Кунжут",
+        "sweet_chili_sauce": "Сладкий соус чили"
+    },
+    "stuffings": {
+        "baked": "Запечённый",
+        "avocado": "Авокадо",
+        "tomato": "Помидоры",
+        "cream_cheese": "Творожный сыр",
+        "chicken": "Курица",
+        "bell_pepper": "Болгарский перец",
+        "cucumber": "Огурцы",
+        "lettuce": "Салатный лист"
+    },
+    "hats": {
+        "crab": "Краб",
+        "baked": "Запечённый"
+    },
+    "pourings": {
+        "mayonnaise": "Майонез",
+        "sweet_chili_sauce": "Сладкий соус чили"
+    },
+    "forms": {
+        "square": "Квадратный",
+        "triangular": "Треугольный",
+        "round": "Круглый"
+    },
+    "names": {
+        "yasai_maki": "Ясай маки",
+        "chicken_roll": "Куриный ролл"
+    }
+}

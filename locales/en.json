@@ -1,0 +1,91 @@
+{
+    "picture": "Picture",
+    "phone": "Phone",
+    "search": "Search",
+    "status": "Status",
+    "en": "EN",
+    "ru": "РУ",
+    "catalog": "Catalog",
+    "create": "Create",
+    "cart": "Cart",
+    "cabinet": "Cabinet",
+    "show_my_location": "Show My Location",
+    "send_blue_location": "Send Blue Location",
+    "send_red_location": "Send Red Location",
+    "my_roll": "My roll",
+    "no": "No",
+    "grams": "gr",
+    "sum": "sum",
+    "price": "Price",
+    "map": "Map",
+    "id": "ID",
+    "date": "Date",
+    "cost": "Cost",
+    "clear": "Clear",
+    "delete": "Delete",
+    "order": "Order",
+    "order_id": "Order ID",
+    "order_details": "Order Details",
+    "orders": "Orders",
+    "my_orders": "My orders",
+    "more": "More",
+    "main": "Main",
+    "username": "Username",
+    "password": "Password",
+    "logout": "Logout",
+    "profile": "Profile",
+    "shopping_cart": "Shopping Cart",
+    "login": "Login",
+    "register": "Register",
+    "hello": "Hello",
+    "add": "Add",
+    "products": "Products",
+    "create_roll": "Create Roll",
+    "name": "Name",
+    "quantity": "Quantity",
+    "cover": "Cover",
+    "additional_cover": "Additional Cover",
+    "stuffing": "Stuffing",
+    "form": "Form",
+    "hat": "Hat",
+    "pouring": "Pouring",
+    "covers": {
+        "nori": "Nori",
+        "salmon": "Salmon",
+        "eel": "Eel",
+        "sesame": "Sesame"
+    },
+    "additional_covers": {
+        "caviar": "Caviar",
+        "mayonnaise": "Mayonnaise",
+        "sesame": "Sesame",
+        "sweet_chili_sauce": "Sweet chili sauce"
+    },
+    "stuffings": {
+        "baked": "Baked",
+        "avocado": "Avocado",
+        "tomato": "Tomato",
+        "cream_cheese": "Cream cheese",
+        "chicken": "Chicken",
+        "bell_pepper": "Bell pepper",
+        "cucumber": "Cucumber",
+        "lettuce": "Lettuce"
+    },
+    "hats": {
+        "crab": "Crab",
+        "baked": "Baked"
+    },
+    "pourings": {
+        "mayonnaise": "Mayonnaise",
+        "sweet_chili_sauce": "Sweet chili sauce"
+    },
+    "forms": {
+        "square": "Square",
+        "triangular": "Triangular",
+        "round": "Round"
+    },
+    "names": {
+        "yasai_maki": "Yasai Maki",
+        "chicken_roll": "Chicken roll"
+    }
+}
