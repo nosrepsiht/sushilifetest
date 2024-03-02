@@ -86,7 +86,7 @@ app.use(express.json())
 
 
 app.get("/", (req, res)=>{
-    res.json("hello, this is backend")
+    res.json("hello, this is backend 2a")
 })
 
 app.get("/products", async (req, res)=>{
