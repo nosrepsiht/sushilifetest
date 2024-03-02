@@ -454,8 +454,8 @@ app.delete("/getLocation/:username", (req, res)=>{
 
 app.post("/order", async (req, res)=>{
     
-    // console.log("1:" + new Date(req.body[6]).toLocaleString())
-    // console.log("2:" + new Date(req.body[6]))
+    console.log("1:" + new Date(req.body[6]).toLocaleString())
+    console.log("2:" + new Date(req.body[6]))
     const mongoClient = new MongoClient(conStr)
     // console.log(req.body[1][0].product_hat)
     // return;
