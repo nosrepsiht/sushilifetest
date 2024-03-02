@@ -454,8 +454,9 @@ app.delete("/getLocation/:username", (req, res)=>{
 
 app.post("/order", async (req, res)=>{
     
-    console.log("1:" + new Date(req.body[6]).toLocaleString())
-    console.log("2:" + new Date(req.body[6]))
+    // console.log(req.body[6])
+    // console.log("1:" + new Date(req.body[6]).toLocaleString())
+    // console.log("2:" + new Date(req.body[6]))
     const mongoClient = new MongoClient(conStr)
     // console.log(req.body[1][0].product_hat)
     // return;
@@ -636,7 +637,7 @@ app.post("/order", async (req, res)=>{
     await mongoClient
     .db()
     .collection('orders')
-    .insertOne({order_id: max_order_id, phone: req.body[0], cost: allCost, locationX: req.body[3], locationY: req.body[2], datetime: new Date(req.body[6]).toLocaleString(), future_order: req.body[5], status: 0, chopsticks_quantity: req.body[4].chopsticks_quantity, delivery_method: req.body[4].delivery_method})
+    .insertOne({order_id: max_order_id, phone: req.body[0], cost: allCost, locationX: req.body[3], locationY: req.body[2], datetime: req.body[6], future_order: req.body[5], status: 0, chopsticks_quantity: req.body[4].chopsticks_quantity, delivery_method: req.body[4].delivery_method})
 
     // q = "INSERT INTO `orders` (`order_id`, `phone`, `cost`, `locationX`, `locationY`, `datetime`, `future_order`, `status`, `chopsticks_quantity`, `delivery_method`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
     // console.log(req.body[2])
@@ -709,7 +710,7 @@ app.post("/order", async (req, res)=>{
     message += "\n\n" + "Количество палочек: " + req.body[4].chopsticks_quantity
     req.body[4].delivery_method == "free" ? message += "\n" + "Способ доставки: Бесплатная (медленная)" : message += "\n" + "Способ доставки: Платная (Яндекс Такси)"
     message += "\n" + "Итого: " + (allCost).toLocaleString('en') + " " + t('sum')
-    req.body[5] == true ? message += "\n" + "Приготовить: " + new Date(req.body[6]).toLocaleString() : message += "\n" + "Приготовить: сейчас"
+    req.body[5] == true ? message += "\n" + "Приготовить: " + req.body[6] : message += "\n" + "Приготовить: сейчас"
     message += "\n\n+998" + req.body[0]
 
     // console.log("nice")
