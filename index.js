@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { json } from 'express'
 import mysql from 'mysql'
 import cors from 'cors'
 import axios from 'axios'
@@ -96,15 +96,16 @@ app.get("/products", async (req, res)=>{
     //     return res.json(data)
     // })
 
-    1
+    // 1
     const mongoClient = new MongoClient(conStr)
     const data = await mongoClient
     .db()
     .collection('products')
     .find({})
+    .sort( {product_cost: 1} )
     .toArray()
 
-    console.log(data)
+    // console.log(data)
     res.json(data)
 
     // 2
@@ -119,51 +120,91 @@ app.get("/products", async (req, res)=>{
     // })
 })
 
-app.get("/components", (req, res)=>{
+app.get("/components", async (req, res)=>{
     // console.log("hello?)")
     var bigData = []
-    var q = "SELECT * FROM product_covers"
 
-    db.query(q, (err,data)=>{
-        if(err) return res.json(err)
-        bigData[0] = data
-    })
+    const mongoClient = new MongoClient(conStr)
+    const data_product_covers = await mongoClient
+    .db()
+    .collection('product_covers')
+    .find({})
+    .toArray()
 
-    q = "SELECT * FROM product_additional_covers"
+    const data_product_additional_covers = await mongoClient
+    .db()
+    .collection('product_additional_covers')
+    .find({})
+    .toArray()
 
-    db.query(q, (err,data)=>{
-        if(err) return res.json(err)
-        bigData[1] = data
-    })
+    const data_product_stuffings = await mongoClient
+    .db()
+    .collection('product_stuffings')
+    .find({})
+    .toArray()
 
-    q = "SELECT * FROM product_stuffings"
+    const data_product_hats = await mongoClient
+    .db()
+    .collection('product_hats')
+    .find({})
+    .toArray()
 
-    db.query(q, (err,data)=>{
-        if(err) return res.json(err)
-        bigData[2] = data
-    })
+    const data_product_pouring = await mongoClient
+    .db()
+    .collection('product_pouring')
+    .find({})
+    .toArray()
 
-    q = "SELECT * FROM product_hats"
+    bigData[0] = data_product_covers
+    bigData[1] = data_product_additional_covers
+    bigData[2] = data_product_stuffings
+    bigData[3] = data_product_hats
+    bigData[4] = data_product_pouring
+    return res.json(bigData)
 
-    db.query(q, (err,data)=>{
-        if(err) return res.json(err)
-        bigData[3] = data
-    })
+    // var q = "SELECT * FROM product_covers"
 
-    q = "SELECT * FROM product_pouring"
+    // db.query(q, (err,data)=>{
+    //     if(err) return res.json(err)
+    //     bigData[0] = data
+    // })
 
-    db.query(q, (err,data)=>{
-        if(err) return res.json(err)
-        bigData[4] = data
-    })
+    // q = "SELECT * FROM product_additional_covers"
 
-    q = "SELECT * FROM product_forms"
+    // db.query(q, (err,data)=>{
+    //     if(err) return res.json(err)
+    //     bigData[1] = data
+    // })
 
-    db.query(q, (err,data)=>{
-        if(err) return res.json(err)
-        bigData[5] = data
-        return res.json(bigData)
-    })
+    // q = "SELECT * FROM product_stuffings"
+
+    // db.query(q, (err,data)=>{
+    //     if(err) return res.json(err)
+    //     bigData[2] = data
+    // })
+
+    // q = "SELECT * FROM product_hats"
+
+    // db.query(q, (err,data)=>{
+    //     if(err) return res.json(err)
+    //     bigData[3] = data
+    // })
+
+    // q = "SELECT * FROM product_pouring"
+
+    // db.query(q, (err,data)=>{
+    //     if(err) return res.json(err)
+    //     bigData[4] = data
+    //     return res.json(bigData)
+    // })
+
+    // q = "SELECT * FROM product_forms"
+
+    // db.query(q, (err,data)=>{
+    //     if(err) return res.json(err)
+    //     bigData[5] = data
+    //     return res.json(bigData)
+    // })
 })
 
 // app.delete("/add/:id", (req, res)=>{
@@ -178,19 +219,43 @@ app.get("/components", (req, res)=>{
 //     })
 // })
 
-app.post("/register", (req, res)=>{
+app.post("/register", async (req, res)=>{
     // console.log("hello?")
     // console.log(req.body)
+    
+    const mongoClient = new MongoClient(conStr)
 
-    const q = "INSERT INTO `users` (`username`, `password`) VALUES (?)"
-    const values = [
-        req.body.username,
-        req.body.password]
+    const data_users = await mongoClient
+    .db()
+    .collection('users')
+    .find({username: req.body.username})
+    .toArray()
+    // .then(async () => {
+        
+    // }
+    // )
 
-    db.query(q, [values], (err, data)=>{
-        if(err) return res.json([req.body.username, "fail"])
-        return res.json([req.body.username, "success"])
-    })
+    if (data_users.length == 0) {
+        await mongoClient
+        .db()
+        .collection('users')
+        .insertOne({username: req.body.username, password: req.body.password})
+        res.json([req.body.username, "success"])
+    }
+
+    else {
+        return res.json([req.body.username, "fail"])
+    }
+
+    // const q = "INSERT INTO `users` (`username`, `password`) VALUES (?)"
+    // const values = [
+    //     req.body.username,
+    //     req.body.password]
+
+    // db.query(q, [values], (err, data)=>{
+    //     if(err) return res.json([req.body.username, "fail"])
+    //     return res.json([req.body.username, "success"])
+    // })
 })
 
 app.post("/getAccount", (req, res)=>{
@@ -389,7 +454,9 @@ app.delete("/getLocation/:username", (req, res)=>{
 
 app.post("/order", async (req, res)=>{
     
-
+    // console.log("1:" + new Date(req.body[6]).toLocaleString())
+    // console.log("2:" + new Date(req.body[6]))
+    const mongoClient = new MongoClient(conStr)
     // console.log(req.body[1][0].product_hat)
     // return;
     let q
@@ -406,19 +473,34 @@ app.post("/order", async (req, res)=>{
             oneCost = 0
             
             // Get Cover cost
-            q = "SELECT cover_cost FROM product_covers WHERE cover = ?";
-            let coverCost = await getValue(q, req.body[1][i].product_cover)
-            oneCost += coverCost[0].cover_cost
-            console.log("Cover: " + coverCost[0].cover_cost)
+            const data_cover_cost = await mongoClient
+            .db()
+            .collection('product_covers')
+            .find({cover: req.body[1][i].product_cover})
+            .toArray()
+            oneCost += parseInt(data_cover_cost[0].cover_cost)
+            // console.log("Cover2: " + data_cover_cost[0].cover_cost)
+            
+            // q = "SELECT cover_cost FROM product_covers WHERE cover = ?";
+            // let coverCost = await getValue(q, req.body[1][i].product_cover)
+            // oneCost += coverCost[0].cover_cost
+            // console.log("Cover: " + coverCost[0].cover_cost)
 
             if (req.body[1][i].product_additional_cover != "") {
                 // Get Additional Cover Costs
                 let testArr = req.body[1][i].product_additional_cover.split(";");
                 for (let j = 0; j < testArr.length; j++) {
-                    q = "SELECT additional_cover_cost FROM product_additional_covers WHERE additional_cover = ?";
-                    let additionalCoverCost = await getValue(q, testArr[j])
-                    oneCost += additionalCoverCost[0].additional_cover_cost
-                    console.log("additionalCoverCost: " + additionalCoverCost[0].additional_cover_cost)
+                    const data_additional_cover_cost = await mongoClient
+                    .db()
+                    .collection('product_additional_covers')
+                    .find({additional_cover: testArr[j]})
+                    .toArray()
+                    oneCost += parseInt(data_additional_cover_cost[0].additional_cover_cost)
+
+                    // q = "SELECT additional_cover_cost FROM product_additional_covers WHERE additional_cover = ?";
+                    // let additionalCoverCost = await getValue(q, testArr[j])
+                    // oneCost += additionalCoverCost[0].additional_cover_cost
+                    // console.log("additionalCoverCost: " + additionalCoverCost[0].additional_cover_cost)
                 }
             }
 
@@ -426,10 +508,17 @@ app.post("/order", async (req, res)=>{
                 // Get Stuffing Costs
                 let testArr2 = req.body[1][i].product_stuffing.split(";");
                 for (let k = 0; k < testArr2.length; k++) {
-                    q = "SELECT stuffing_cost FROM product_stuffings WHERE stuffing = ?";
-                    let stuffingCost = await getValue(q, testArr2[k].split(":")[0])
-                    oneCost += (stuffingCost[0].stuffing_cost * parseInt(testArr2[k].split(":")[1])) / 10
-                    console.log("stuffingCost: " + (stuffingCost[0].stuffing_cost * parseInt(testArr2[k].split(":")[1])) / 10)
+                    const data_stuffing_cost = await mongoClient
+                    .db()
+                    .collection('product_stuffings')
+                    .find({stuffing: testArr2[k].split(":")[0]})
+                    .toArray()
+                    oneCost += (parseInt(data_stuffing_cost[0].stuffing_cost) * parseInt(testArr2[k].split(":")[1])) / 10
+
+                    // q = "SELECT stuffing_cost FROM product_stuffings WHERE stuffing = ?";
+                    // let stuffingCost = await getValue(q, testArr2[k].split(":")[0])
+                    // oneCost += (stuffingCost[0].stuffing_cost * parseInt(testArr2[k].split(":")[1])) / 10
+                    // console.log("stuffingCost: " + (stuffingCost[0].stuffing_cost * parseInt(testArr2[k].split(":")[1])) / 10)
                 }
             }
 
@@ -437,36 +526,63 @@ app.post("/order", async (req, res)=>{
                 // Get Pouring Costs
                 let testArr2 = req.body[1][i].product_pouring.split(";");
                 for (let k = 0; k < testArr2.length; k++) {
-                    q = "SELECT pouring_cost FROM product_pouring WHERE pouring = ?";
-                    let pouringCost = await getValue(q, testArr2[k])
-                    oneCost += pouringCost[0].pouring_cost
-                    console.log("pouringCost: " + pouringCost[0].pouring_cost)
+                    const data_pouring_cost = await mongoClient
+                    .db()
+                    .collection('product_pouring')
+                    .find({pouring: testArr2[k]})
+                    .toArray()
+                    oneCost += parseInt(data_pouring_cost[0].pouring_cost)
+
+                    // q = "SELECT pouring_cost FROM product_pouring WHERE pouring = ?";
+                    // let pouringCost = await getValue(q, testArr2[k])
+                    // oneCost += pouringCost[0].pouring_cost
+                    // console.log("pouringCost: " + pouringCost[0].pouring_cost)
                 }
             }
 
             if (req.body[1][i].product_hat != "") {
                 // Get Hat cost
-                q = "SELECT hat_cost FROM product_hats WHERE hat = ?";
-                let hatCost = await getValue(q, req.body[1][i].product_hat)
-                oneCost += hatCost[0].hat_cost
-                console.log("hatCost: " + hatCost[0].hat_cost)
+                const data_hat_cost = await mongoClient
+                .db()
+                .collection('product_hats')
+                .find({hat: req.body[1][i].product_hat})
+                .toArray()
+                oneCost += parseInt(data_hat_cost[0].hat_cost)
+
+                // q = "SELECT hat_cost FROM product_hats WHERE hat = ?";
+                // let hatCost = await getValue(q, req.body[1][i].product_hat)
+                // oneCost += hatCost[0].hat_cost
+                // console.log("hatCost: " + hatCost[0].hat_cost)
             }
 
-            allCost += oneCost * req.body[1][i].product_quantity;
+            allCost += parseInt(oneCost) * parseInt(req.body[1][i].product_quantity);
             productCosts.push(oneCost)
             
         }
 
         else {
             // console.log("yohoo!")
+
             // Get cost of a product
-            q = "SELECT product_cost FROM products WHERE product_name = ?"
-            let testData4 = await getValue(q, req.body[1][i].product_name)
+            const data_product_cost = await mongoClient
+            .db()
+            .collection('products')
+            .find({product_name: req.body[1][i].product_name}, {product_cost: 1})
+            .toArray()
+            // console.log(data_product_cost)
+            // console.log(data_product_cost[0])
+            // console.log("Product cost2: " + (data_product_cost[0].product_cost * req.body[1][i].product_quantity))
+            allCost += parseInt(data_product_cost[0].product_cost) * parseInt(req.body[1][i].product_quantity);
+            productCosts.push(data_product_cost[0].product_cost)
+            
+            // q = "SELECT product_cost FROM products WHERE product_name = ?"
+            // let testData4 = await getValue(q, req.body[1][i].product_name)
+            // console.log("Product cost: " + (testData4[0].product_cost * req.body[1][i].product_quantity))
 
             // console.log("Price: " + Object.values(req.body[1][i])[3] * Object.values(req.body[1][i])[2])
-            allCost += testData4[0].product_cost * req.body[1][i].product_quantity;
+            // allCost += testData4[0].product_cost * req.body[1][i].product_quantity;
             // console.log("Cost: " + testData4[0].product_cost * req.body[1][i].product_quantity)
-            productCosts.push(testData4[0].product_cost)
+            // productCosts.push(testData4[0].product_cost)
         }
     }
 
@@ -487,8 +603,25 @@ app.post("/order", async (req, res)=>{
     // console.log(location)
 
     // Get maximum order_id
-    q = "SELECT MAX(order_id) as order_id FROM orders"
-    let testData2 = await getValue(q)
+    let max_order_id = 1
+    const data_max_order_id = await mongoClient
+    .db()
+    .collection('orders')
+    .find({})
+    .sort({order_id:-1})
+    .limit(1)
+    .toArray()
+
+    // console.log(max_order_id)
+
+    if (data_max_order_id.length != 0) {
+        max_order_id = data_max_order_id[0].order_id + 1
+    }
+
+    // q = "SELECT MAX(order_id) as order_id FROM orders"
+    // let testData2 = await getValue(q)
+
+
     // console.log(Object.values(testData2[0])[0])
 
     // console.log("date")
@@ -499,19 +632,32 @@ app.post("/order", async (req, res)=>{
     // return
 
     // Insert an order
-    q = "INSERT INTO `orders` (`order_id`, `phone`, `cost`, `locationX`, `locationY`, `datetime`, `future_order`, `status`, `chopsticks_quantity`, `delivery_method`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-    console.log(req.body[2])
-    console.log(req.body[3])
-    // let testData3 = await getValue(q, [testData2[0].order_id + 1, testData[0].user_id, allCost, req.body[3], req.body[2], new Date(req.body[6]), req.body[5], 0, req.body[4].chopsticks_quantity, req.body[4].delivery_method])
-    let testData3 = await getValue(q, [testData2[0].order_id + 1, req.body[0], allCost, req.body[3], req.body[2], new Date(req.body[6]), req.body[5], 0, req.body[4].chopsticks_quantity, req.body[4].delivery_method])
 
-    let message = "Номер заказа: " + (testData2[0].order_id + 1) + "\n\n"
+    await mongoClient
+    .db()
+    .collection('orders')
+    .insertOne({order_id: max_order_id, phone: req.body[0], cost: allCost, locationX: req.body[3], locationY: req.body[2], datetime: new Date(req.body[6]).toLocaleString(), future_order: req.body[5], status: 0, chopsticks_quantity: req.body[4].chopsticks_quantity, delivery_method: req.body[4].delivery_method})
+
+    // q = "INSERT INTO `orders` (`order_id`, `phone`, `cost`, `locationX`, `locationY`, `datetime`, `future_order`, `status`, `chopsticks_quantity`, `delivery_method`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+    // console.log(req.body[2])
+    // console.log(req.body[3])
+    // // let testData3 = await getValue(q, [testData2[0].order_id + 1, testData[0].user_id, allCost, req.body[3], req.body[2], new Date(req.body[6]), req.body[5], 0, req.body[4].chopsticks_quantity, req.body[4].delivery_method])
+    // let testData3 = await getValue(q, [testData2[0].order_id + 1, req.body[0], allCost, req.body[3], req.body[2], new Date(req.body[6]), req.body[5], 0, req.body[4].chopsticks_quantity, req.body[4].delivery_method])
+
+    let message = "Номер заказа: " + max_order_id + "\n\n"
+    // let message = "Номер заказа: " + (testData2[0].order_id + 1) + "\n\n"
     let products = []
     
     // Insert an order_details
     for (let i = 0; i < req.body[1].length; i++) {
-        q = "INSERT INTO `order_details` (`order_id`, `product_name`, `product_quantity`, `product_cost`, `product_cover`, `product_additional_cover`, `product_stuffing`, `product_pouring`, `product_hat`, `product_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
-        let testData4 = await getValue(q, [testData2[0].order_id + 1, req.body[1][i].product_name, parseInt(req.body[1][i].product_quantity), productCosts[i], req.body[1][i].product_cover, req.body[1][i].product_additional_cover != "" ? req.body[1][i].product_additional_cover : null, req.body[1][i].product_stuffing != "" ? req.body[1][i].product_stuffing : null, req.body[1][i].product_pouring != "" ? req.body[1][i].product_pouring : null, req.body[1][i].product_hat, req.body[1][i].product_id])
+
+        await mongoClient
+        .db()
+        .collection('order_details')
+        .insertOne({order_id: max_order_id, product_name: req.body[1][i].product_name, product_quantity: parseInt(req.body[1][i].product_quantity), product_cost: productCosts[i], product_cover: req.body[1][i].product_cover, product_additional_cover: req.body[1][i].product_additional_cover != "" ? req.body[1][i].product_additional_cover : null, product_stuffing: req.body[1][i].product_stuffing != "" ? req.body[1][i].product_stuffing : null, product_pouring: req.body[1][i].product_pouring != "" ? req.body[1][i].product_pouring : null, product_hat: req.body[1][i].product_hat, product_id: req.body[1][i].product_id})
+
+        // q = "INSERT INTO `order_details` (`order_id`, `product_name`, `product_quantity`, `product_cost`, `product_cover`, `product_additional_cover`, `product_stuffing`, `product_pouring`, `product_hat`, `product_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
+        // let testData4 = await getValue(q, [testData2[0].order_id + 1, req.body[1][i].product_name, parseInt(req.body[1][i].product_quantity), productCosts[i], req.body[1][i].product_cover, req.body[1][i].product_additional_cover != "" ? req.body[1][i].product_additional_cover : null, req.body[1][i].product_stuffing != "" ? req.body[1][i].product_stuffing : null, req.body[1][i].product_pouring != "" ? req.body[1][i].product_pouring : null, req.body[1][i].product_hat, req.body[1][i].product_id])
         // db.query(q, [Object.values(data2[0])[0] + 1, Object.values(req.body[2][i])[1], Object.values(req.body[2][i])[2], Object.values(req.body[2][i])[3], Object.values(req.body[2][i])[4], Object.values(req.body[2][i])[5], Object.values(req.body[2][i])[6], Object.values(req.body[2][i])[7]], (err, data4)=>{
         //     if(err) return res.json(err)
         //     counter++
@@ -608,7 +754,7 @@ app.post("/order", async (req, res)=>{
         longitude: req.body[2],
     })
     .then((res) => {
-        console.log(res.data)
+        // console.log(res.data)
         // console.log("MessageID: " + res.data.result.message_id)
         location_message_id = res.data.result.message_id
     })
@@ -624,13 +770,11 @@ app.post("/order", async (req, res)=>{
         reply_to_message_id: location_message_id
     })
     .then((res) => {
-        console.log(res.data)
+        // console.log(res.data)
     })
     .catch((err) => {
         console.log(err)
     })
-
-    
 
     console.log("Total: " + allCost)
     return res.json("nice")
@@ -672,12 +816,24 @@ app.post("/myOrders", async (req, res)=>{
     // let data1 = await getValue(q, req.body[0])
     
     // // Get My Orders
-    // q = "SELECT * FROM orders WHERE user_id = ? ORDER BY order_id DESC"
-    // let data2 = await getValue(q, Object.values(data1[0])[0])
-    let q = "SELECT * FROM orders WHERE phone = ? ORDER BY order_id DESC"
-    let data2 = await getValue(q, req.body[0])
-    // console.log(req.body[0])
-    return res.json(data2)
+
+    const mongoClient = new MongoClient(conStr)
+
+    const data_my_orders = await mongoClient
+    .db()
+    .collection('orders')
+    .find({phone: req.body[0]})
+    .sort({order_id: -1})
+    .toArray()
+
+    return res.json(data_my_orders)
+
+    // // q = "SELECT * FROM orders WHERE user_id = ? ORDER BY order_id DESC"
+    // // let data2 = await getValue(q, Object.values(data1[0])[0])
+    // let q = "SELECT * FROM orders WHERE phone = ? ORDER BY order_id DESC"
+    // let data2 = await getValue(q, req.body[0])
+    // // console.log(req.body[0])
+    // return res.json(data2)
 })
 
 app.get("/allOrders", async (req, res)=>{
@@ -691,16 +847,34 @@ app.get("/allOrders", async (req, res)=>{
 app.delete("/getOrder/:id", async (req, res)=>{
     // console.log("test: " + req.params.id)
 
+    const mongoClient = new MongoClient(conStr)
+
     // Get Order
-    let q = "SELECT * FROM orders WHERE order_id = ?"
-    let data = await getValue(q, req.params.id)
-    // console.log(data[0].locationX)
-    // return res.json(data)
+    const data_order = await mongoClient
+    .db()
+    .collection('orders')
+    .find({order_id: parseInt(req.params.id)})
+    .toArray()
+    
+    // let q = "SELECT * FROM orders WHERE order_id = ?"
+    // let data = await getValue(q, req.params.id)
+    // // console.log(data[0].locationX)
+    // // return res.json(data)
 
     // Get Order Details
-    q = "SELECT * FROM order_details WHERE order_id = ?"
-    let data2 = await getValue(q, data[0].order_id)
-    return res.json([data, data2])
+    const data_order_details = await mongoClient
+    .db()
+    .collection('order_details')
+    .find({order_id: parseInt(req.params.id)})
+    .toArray()
+
+    console.log(data_order)
+    console.log(data_order_details)
+    return res.json([data_order, data_order_details])
+
+    // q = "SELECT * FROM order_details WHERE order_id = ?"
+    // let data2 = await getValue(q, data[0].order_id)
+    // return res.json([data, data2])
 })
 
 app.get("/getLastOrder", async (req, res)=>{
@@ -711,22 +885,39 @@ app.get("/getLastOrder", async (req, res)=>{
     return res.json(data2)
 })
 
-app.post("/login", (req, res)=>{
-    console.log("hello?")
-    console.log(req.body)
+app.post("/login", async (req, res)=>{
+    // console.log("hello?")
+    // console.log(req.body)
 
-    const username = req.body.username
-    const password = req.body.password
+    const mongoClient = new MongoClient(conStr)
 
-    const q = "SELECT username, password FROM users WHERE username = ? AND password = ?"
-    // const values = [
-    //     req.body.username,
-    //     req.body.password]
+    const data_users = await mongoClient
+    .db()
+    .collection('users')
+    .find({username: req.body.username, password: req.body.password})
+    .toArray()
 
-    db.query(q, [username, password], (err, data)=>{
-        if(err) return res.json(err)
-        return res.json(data)
-    })
+    return res.json(data_users)
+
+    // if (data_users.length != 0) {
+    //     await mongoClient
+    //     .db()
+    //     .collection('users')
+    //     .insertOne({username: req.body.username, password: req.body.password})
+    // }
+
+    // const username = req.body.username
+    // const password = req.body.password
+
+    // const q = "SELECT username, password FROM users WHERE username = ? AND password = ?"
+    // // const values = [
+    // //     req.body.username,
+    // //     req.body.password]
+
+    // db.query(q, [username, password], (err, data)=>{
+    //     if(err) return res.json(err)
+    //     return res.json(data)
+    // })
 })
 
 // io.on('connection', (socket) => {
