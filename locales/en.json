@@ -1,4 +1,12 @@
 {
+    "yandex_taxi": "Yandex Taxi",
+    "contacts": "Contacts",
+    "delivery_method": "Delivery method",
+    "paid": "Paid",
+    "free": "Free",
+    "fast": "Fast",
+    "slow": "Slow",
+    "number_of_sticks": "Number of sticks",
     "picture": "Picture",
     "phone": "Phone",
     "search": "Search",
@@ -24,6 +32,8 @@
     "clear": "Clear",
     "delete": "Delete",
     "order": "Order",
+    "order_now": "Order now",
+    "order_later": "Order later",
     "order_id": "Order ID",
     "order_details": "Order Details",
     "orders": "Orders",
@@ -53,13 +63,25 @@
         "nori": "Nori",
         "salmon": "Salmon",
         "eel": "Eel",
-        "sesame": "Sesame"
+        "sesame": "Sesame",
+        "fried": "Fried",
+        "masago_orange": "Masago orange",
+        "masago_green": "Masago green",
+        "smoked_salmon_with_mayonnaise": "Smoked salmon with mayonnaise",
+        "smoked_salmon": "Smoked salmon",
+        "salmon_with_eel": "Salmon with eel",
+        "dill": "Dill",
+        "tuna_flakes": "Tuna flakes",
+        "tuna": "Tuna",
+        "salmon_with_mayonnaise": "Salmon with mayonnaise",
+        "pancake": "Pancake"
     },
     "additional_covers": {
         "caviar": "Caviar",
         "mayonnaise": "Mayonnaise",
         "sesame": "Sesame",
-        "sweet_chili_sauce": "Sweet chili sauce"
+        "sweet_chili_sauce": "Sweet chili sauce",
+        "green_onions": "Green onions"
     },
     "stuffings": {
         "baked": "Baked",
@@ -69,15 +91,29 @@
         "chicken": "Chicken",
         "bell_pepper": "Bell pepper",
         "cucumber": "Cucumber",
-        "lettuce": "Lettuce"
+        "lettuce": "Lettuce",
+        "shrimps_boiled": "Boiled shrimps",
+        "shrimps_fried": "Fried shrimps",
+        "smoked_salmon": "Smoked salmon",
+        "eel": "Eel",
+        "salmon": "Salmon",
+        "tuna": "Tuna",
+        "snow_crab": "Snow crab",
+        "masago_orange": "Masago orange",
+        "masago_green": "Masago green"
     },
     "hats": {
         "crab": "Crab",
-        "baked": "Baked"
+        "baked": "Baked",
+        "cream_cheese": "Cream cheese",
+        "shrimps": "Shrimps"
     },
     "pourings": {
         "mayonnaise": "Mayonnaise",
-        "sweet_chili_sauce": "Sweet chili sauce"
+        "sweet_chili_sauce": "Sweet chili sauce",
+        "unagi_sauce": "Unagi sauce",
+        "spicy_sauce": "Spicy sauce",
+        "sesame": "Sesame"
     },
     "forms": {
         "square": "Square",
@@ -86,6 +122,29 @@
     },
     "names": {
         "yasai_maki": "Yasai Maki",
-        "chicken_roll": "Chicken roll"
+        "chicken_roll": "Chicken roll",
+        "ashiro_roll": "Ashiro roll",
+        "baked_chicken": "Baked with chicken",
+        "baked_eel": "Baked with eel",
+        "baked_salmon": "Baked with salmon",
+        "baked_shrimps": "Baked with shrimps",
+        "baked_snow_crab": "Baked with snow crab",
+        "baked_tuna": "Baked with tuna",
+        "california": "California",
+        "california_salmon": "California with salmon",
+        "california_tempura": "California tempura",
+        "canada": "Canada",
+        "chicken_tempura": "Chicken tempura",
+        "fudziyama": "Fudzijama",
+        "green_roll": "Green roll",
+        "philadelphia_classic": "Philadelphia classic",
+        "philadelphia_ikura": "Philadelphia ikura",
+        "rio_roll": "Rio roll",
+        "samurai_roll": "Samurai roll",
+        "special_roll": "Special roll",
+        "spicy_abi_roll": "Spicy abi roll",
+        "syake_tempura": "Syake tempura",
+        "tombo_roll": "Tombo roll",
+        "unagi_tempura": "Unagi tempura"
     }
 }

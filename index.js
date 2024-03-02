@@ -2,23 +2,42 @@ import express from 'express'
 import mysql from 'mysql'
 import cors from 'cors'
 import axios from 'axios'
-import './i18n'
-import { useTranslation } from 'react-i18next'
+import { readFile } from 'fs/promises';
+// import mongoose from 'mongoose'
 
-const { t } = useTranslation()
-const locales = {
-    en: {title: 'English'},
-    ru: {title: 'Русский'}
-}
+// mongoose.connect("mongodb+srv://nosrepsiht2002:NDLEHZGdEgOuAiEt@cluster0.fet2ix5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+// import i18n from '../i18n'
+// import { useTranslation } from 'react-i18next'
+
+// import { t } from './i18n.js'
+// const locales = {
+//     en: {title: 'English'},
+//     ru: {title: 'Русский'}
+// }
 
 // import { Server } from 'socket.io'
 // import { createServer } from 'http'
 
-const url = `https://api.telegram.org/bot7025954997:AAEuUd8kvV8vd_KSVEqHTACVd2_zjnzbNm4/sendMessage`
+import {init, t} from 'i18next'
 
+const url = `https://api.telegram.org/bot7025954997:AAEuUd8kvV8vd_KSVEqHTACVd2_zjnzbNm4/sendMessage`
+const urlLocation = `https://api.telegram.org/bot7025954997:AAEuUd8kvV8vd_KSVEqHTACVd2_zjnzbNm4/sendlocation`
 
 // const twilio new
 const app = express()
+
+init({
+    lng: 'ru',
+    resources: {
+      en: {
+        translation: JSON.parse(await readFile('./locales/en.json', 'utf8')),
+      },
+      ru: {
+        translation: JSON.parse(await readFile('./locales/ru.json', 'utf8')),
+      },
+    },
+  });
+
 app.use(cors())
 // const server = createServer(app)
 // const io = new Server(server, {
@@ -45,6 +64,21 @@ const db = mysql.createConnection({
 // })
 
 app.use(express.json())
+
+// const translationsDir = path.join(__dirname, 'translations');
+
+// app.get('/api/translations/:lang', (req, res) => {
+//   const { lang } = req.params;
+//   const filePath = path.join(translationsDir, `${lang}.json`);
+//   fs.readFile(filePath, 'utf8', (err, data) => {
+//     if (err) {
+//       res.status(404).json({ message: 'Translations not found' });
+//       return;
+//     }
+//     const translations = JSON.parse(data);
+//     res.json(translations);
+//   });
+// });
 
 
 app.get("/", (req, res)=>{
@@ -420,8 +454,8 @@ app.post("/order", async (req, res)=>{
     // let user_id = Object.values(location[0])[2]
 
     // Get user_id
-    q = "SELECT user_id FROM users WHERE username = ?"
-    let testData = await getValue(q, req.body[0])
+    // q = "SELECT user_id FROM users WHERE username = ?"
+    // let testData = await getValue(q, req.body[0])
     // let user_id = Object.values(location[0])[2]
 
     // console.log(location)
@@ -431,11 +465,19 @@ app.post("/order", async (req, res)=>{
     let testData2 = await getValue(q)
     // console.log(Object.values(testData2[0])[0])
 
+    // console.log("date")
+    // console.log(new Date(Date.now()))
+
+    // console.log("my_date")
+    // console.log(new Date(req.body[6]))
+    // return
+
     // Insert an order
-    q = "INSERT INTO `orders` (`order_id`, `user_id`, `cost`, `locationX`, `locationY`, `datetime`, `status`) VALUES (?, ?, ?, ?, ?, NOW(), ?)"
+    q = "INSERT INTO `orders` (`order_id`, `phone`, `cost`, `locationX`, `locationY`, `datetime`, `future_order`, `status`, `chopsticks_quantity`, `delivery_method`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
     console.log(req.body[2])
     console.log(req.body[3])
-    let testData3 = await getValue(q, [testData2[0].order_id + 1, testData[0].user_id, allCost, req.body[3], req.body[2], 0])
+    // let testData3 = await getValue(q, [testData2[0].order_id + 1, testData[0].user_id, allCost, req.body[3], req.body[2], new Date(req.body[6]), req.body[5], 0, req.body[4].chopsticks_quantity, req.body[4].delivery_method])
+    let testData3 = await getValue(q, [testData2[0].order_id + 1, req.body[0], allCost, req.body[3], req.body[2], new Date(req.body[6]), req.body[5], 0, req.body[4].chopsticks_quantity, req.body[4].delivery_method])
 
     let message = "Номер заказа: " + (testData2[0].order_id + 1) + "\n\n"
     let products = []
@@ -454,16 +496,18 @@ app.post("/order", async (req, res)=>{
         // })
 
         let _name = req.body[1][i].product_id != 0 ? t('names.' + req.body[1][i].product_name) : req.body[1][i].product_name
-        let _stuffing = req.body[1][i].product_stuffing != null ? req.body[1][i].product_id != 0 ? req.body[1][i].product_stuffing.split(";").map((stuffing2) => t('stuffings.' + stuffing2)).join(', ') : req.body[1][i].product_stuffing.split(";").map((stuffing3) => t('stuffings.' + stuffing3.split(":")[0]) + " (" + stuffing3.split(":")[1] + " " + t('grams') + ")").join(', ') : t('no')
-        let _pouring = req.body[1][i].product_pouring != null ? t('pourings.' + req.body[1][i].product_pouring) : t('no')
-        let _hat = req.body[1][i].product_hat != null ? t('hats.' + req.body[1][i].product_hat) : t('no')
+        let _stuffing = req.body[1][i].product_stuffing != null && req.body[1][i].product_stuffing != "" ? req.body[1][i].product_id != 0 ? req.body[1][i].product_stuffing.split(";").map((stuffing2) => t('stuffings.' + stuffing2)).join(', ') : req.body[1][i].product_stuffing.split(";").map((stuffing3) => t('stuffings.' + stuffing3.split(":")[0]) + " (" + stuffing3.split(":")[1] + " " + t('grams') + ")").join(', ') : t('no')
+        // let _pouring = req.body[1][i].product_pouring != null && req.body[1][i].product_pouring != "" ? t('pourings.' + req.body[1][i].product_pouring) : t('no')
+        let _pouring = req.body[1][i].product_pouring != null && req.body[1][i].product_pouring != "" ? req.body[1][i].product_pouring.split(";").map((product_pouring) => t('pourings.' + product_pouring)).join(', ') : t('no')
+        let _hat = req.body[1][i].product_hat != null && req.body[1][i].product_hat != "" ? t('hats.' + req.body[1][i].product_hat) : t('no')
         let _cover = t('covers.' + req.body[1][i].product_cover)
-        let _additional_cover = req.body[1][i].product_additional_cover != null ? req.body[1][i].product_additional_cover.split(";").map((additional_cover) => t('additional_covers.' + additional_cover)).join(', ') : t('no')
+        let _additional_cover = req.body[1][i].product_additional_cover != null && req.body[1][i].product_additional_cover != "" ? req.body[1][i].product_additional_cover.split(";").map((additional_cover) => t('additional_covers.' + additional_cover)).join(', ') : t('no')
         let _quantity = req.body[1][i].product_quantity
         let _cost = req.body[1][i].product_cost
         let _price = parseInt(req.body[1][i].product_quantity) * parseInt(req.body[1][i].product_cost)
 
         products.push({_name, _stuffing, _pouring, _hat, _cover, _additional_cover, _quantity, _cost, _price})
+        // products.push({_name})
     }
 
     for (let i = 0; i < products.length; i++) {
@@ -482,7 +526,19 @@ app.post("/order", async (req, res)=>{
         }
     }
 
-    message += "\n\n" + "Итого: " + (lastOrder.data[0].cost).toLocaleString('en') + " " + t('sum')
+    // for (let i = 0; i < products.length; i++) {
+    //     message += t('name') + ": " + products[i]._name
+
+    //     if (i + 1 < products.length) {
+    //         message += "\n\n"
+    //     }
+    // }
+
+    message += "\n\n" + "Количество палочек: " + req.body[4].chopsticks_quantity
+    req.body[4].delivery_method == "free" ? message += "\n" + "Способ доставки: Бесплатная (медленная)" : message += "\n" + "Способ доставки: Платная (Яндекс Такси)"
+    message += "\n" + "Итого: " + (allCost).toLocaleString('en') + " " + t('sum')
+    req.body[5] == true ? message += "\n" + "Приготовить: " + new Date(req.body[6]).toLocaleString() : message += "\n" + "Приготовить: сейчас"
+    message += "\n\n+998" + req.body[0]
 
     // console.log("nice")
 
@@ -517,10 +573,29 @@ app.post("/order", async (req, res)=>{
     //     })
     // })
 
+    let location_message_id = 0
+
+    await axios.post(urlLocation, {
+        // chat_id: -1002036778710,
+        chat_id: -1002025697043,
+        latitude: req.body[3],
+        longitude: req.body[2],
+    })
+    .then((res) => {
+        console.log(res.data)
+        // console.log("MessageID: " + res.data.result.message_id)
+        location_message_id = res.data.result.message_id
+    })
+    .catch((err) => {
+        console.log(err)
+    })
+
     const someData = await axios.post(url, {
-        chat_id: -1002036778710,
+        // chat_id: -1002036778710,
+        chat_id: -1002025697043,
         parse_mode: 'html',
         text: message,
+        reply_to_message_id: location_message_id
     })
     .then((res) => {
         console.log(res.data)
@@ -528,6 +603,8 @@ app.post("/order", async (req, res)=>{
     .catch((err) => {
         console.log(err)
     })
+
+    
 
     console.log("Total: " + allCost)
     return res.json("nice")
@@ -565,12 +642,14 @@ let getValue = (q, value) => {
 app.post("/myOrders", async (req, res)=>{
     
     // Get user_id ----- Object.values(data1[0])[0]
-    let q = "SELECT user_id FROM users WHERE username = ?"
-    let data1 = await getValue(q, req.body[0])
+    // let q = "SELECT user_id FROM users WHERE username = ?"
+    // let data1 = await getValue(q, req.body[0])
     
     // // Get My Orders
-    q = "SELECT * FROM orders WHERE user_id = ? ORDER BY order_id DESC"
-    let data2 = await getValue(q, Object.values(data1[0])[0])
+    // q = "SELECT * FROM orders WHERE user_id = ? ORDER BY order_id DESC"
+    // let data2 = await getValue(q, Object.values(data1[0])[0])
+    let q = "SELECT * FROM orders WHERE phone = ? ORDER BY order_id DESC"
+    let data2 = await getValue(q, req.body[0])
     // console.log(req.body[0])
     return res.json(data2)
 })

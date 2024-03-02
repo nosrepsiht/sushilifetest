@@ -1,4 +1,12 @@
 {
+    "yandex_taxi": "Яндекс Такси",
+    "contacts": "Контакты",
+    "delivery_method": "Способ доставки",
+    "paid": "Платная",
+    "free": "Бесплатная",
+    "fast": "быстрая",
+    "slow": "медленная",
+    "number_of_sticks": "Количество палочек",
     "picture": "Картинка",
     "phone": "Номер телефона",
     "search": "Поиск",
@@ -24,6 +32,8 @@
     "clear": "Очистить",
     "delete": "Удалить",
     "order": "Заказать",
+    "order_now": "Заказать сейчас",
+    "order_later": "Заказать потом",
     "order_id": "Номер заказа",
     "order_details": "Детали заказа",
     "orders": "Заказы",
@@ -53,13 +63,25 @@
         "nori": "Нори",
         "salmon": "Лосось",
         "eel": "Угорь",
-        "sesame": "Кунжут"
+        "sesame": "Кунжут",
+        "fried": "Жареный",
+        "masago_orange": "Оранжевая масаго",
+        "masago_green": "Зеленая масаго",
+        "smoked_salmon_with_mayonnaise": "Копчёный лосось с майонезом",
+        "smoked_salmon": "Копчёный лосось",
+        "salmon_with_eel": "Лосось с угрем",
+        "dill": "Укроп",
+        "tuna_flakes": "Стружка тунца",
+        "tuna": "Тунец",
+        "salmon_with_mayonnaise": "Лосось с майонезом",
+        "pancake": "Блинчик"
     },
     "additional_covers": {
         "caviar": "Икра",
         "mayonnaise": "Майонез",
         "sesame": "Кунжут",
-        "sweet_chili_sauce": "Сладкий соус чили"
+        "sweet_chili_sauce": "Сладкий соус чили",
+        "green_onions": "Зелёный лук"
     },
     "stuffings": {
         "baked": "Запечённый",
@@ -69,15 +91,29 @@
         "chicken": "Курица",
         "bell_pepper": "Болгарский перец",
         "cucumber": "Огурцы",
-        "lettuce": "Салатный лист"
+        "lettuce": "Салатный лист",
+        "shrimps_boiled": "Варёные креветки",
+        "shrimps_fried": "Жареные креветки",
+        "smoked_salmon": "Копчёный лосось",
+        "eel": "Угорь",
+        "salmon": "Лосось",
+        "tuna": "Тунец",
+        "snow_crab": "Снежный краб",
+        "masago_orange": "Оранжевая масаго",
+        "masago_green": "Зеленая масаго"
     },
     "hats": {
         "crab": "Краб",
-        "baked": "Запечённый"
+        "baked": "Запечённый",
+        "cream_cheese": "Творожный сыр",
+        "shrimps": "Креветки"
     },
     "pourings": {
         "mayonnaise": "Майонез",
-        "sweet_chili_sauce": "Сладкий соус чили"
+        "sweet_chili_sauce": "Сладкий соус чили",
+        "unagi_sauce": "Унаги соус",
+        "spicy_sauce": "Острый соус",
+        "sesame": "Кунжут"
     },
     "forms": {
         "square": "Квадратный",
@@ -86,6 +122,29 @@
     },
     "names": {
         "yasai_maki": "Ясай маки",
-        "chicken_roll": "Куриный ролл"
+        "chicken_roll": "Куриный ролл",
+        "ashiro_roll": "Аширо ролл",
+        "baked_chicken": "Запечённые с курицей",
+        "baked_eel": "Запечённые с угрём",
+        "baked_salmon": "Запечённые с лососем",
+        "baked_shrimps": "Запечённые с креветками",
+        "baked_snow_crab": "Запечённые со снежным крабом",
+        "baked_tuna": "Запечённые с тунцом",
+        "california": "Калифорния",
+        "california_salmon": "Калифорния с лососем",
+        "california_tempura": "Калифорния темпура",
+        "canada": "Канада",
+        "chicken_tempura": "Чикен темпура",
+        "fudziyama": "Фудзияма",
+        "green_roll": "Грин ролл",
+        "philadelphia_classic": "Филадельфия классик",
+        "philadelphia_ikura": "Филадельфия икура",
+        "rio_roll": "Рио ролл",
+        "samurai_roll": "Самурай ролл",
+        "special_roll": "Спейшл ролл",
+        "spicy_abi_roll": "Спайси эби ролл",
+        "syake_tempura": "Сяке темпура",
+        "tombo_roll": "Томбо ролл",
+        "unagi_tempura": "Унаги темпура"
     }
 }
