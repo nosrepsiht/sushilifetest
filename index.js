@@ -4,6 +4,7 @@ import cors from 'cors'
 import axios from 'axios'
 import { readFile } from 'fs/promises';
 // import mongoose from 'mongoose'
+import { MongoClient } from 'mongodb';
 
 // mongoose.connect("mongodb+srv://nosrepsiht2002:NDLEHZGdEgOuAiEt@cluster0.fet2ix5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 // import i18n from '../i18n'
@@ -22,6 +23,9 @@ import {init, t} from 'i18next'
 
 const url = `https://api.telegram.org/bot7025954997:AAEuUd8kvV8vd_KSVEqHTACVd2_zjnzbNm4/sendMessage`
 const urlLocation = `https://api.telegram.org/bot7025954997:AAEuUd8kvV8vd_KSVEqHTACVd2_zjnzbNm4/sendlocation`
+
+const conStr = 'mongodb+srv://nosrepsiht2002:NDLEHZGdEgOuAiEt@cluster0.fet2ix5.mongodb.net/mydb?retryWrites=true&w=majority&appName=Cluster0'
+// mongoose.connect(conStr)
 
 // const twilio new
 const app = express()
@@ -85,12 +89,34 @@ app.get("/", (req, res)=>{
     res.json("hello, this is backend")
 })
 
-app.get("/products", (req, res)=>{
-    const q = "SELECT * FROM products"
-    db.query(q, (err,data)=>{
-        if(err) return res.json(err)
-        return res.json(data)
-    })
+app.get("/products", async (req, res)=>{
+    // const q = "SELECT * FROM products"
+    // db.query(q, (err,data)=>{
+    //     if(err) return res.json(err)
+    //     return res.json(data)
+    // })
+
+    1
+    const mongoClient = new MongoClient(conStr)
+    const data = await mongoClient
+    .db()
+    .collection('products')
+    .find({})
+    .toArray()
+
+    console.log(data)
+    res.json(data)
+
+    // 2
+    // MongoClient.connect(conStr, (err, db) => {
+    //     if (err) throw err
+    //     let dbo = db.db("mydb")
+    //     dbo.collection("products").find({}).toArray((err, res) => {
+    //         if (err) throw err
+    //         console.log(res)
+    //         db.close
+    //     })
+    // })
 })
 
 app.get("/components", (req, res)=>{
