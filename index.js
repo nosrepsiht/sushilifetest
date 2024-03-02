@@ -747,34 +747,34 @@ app.post("/order", async (req, res)=>{
 
     let location_message_id = 0
 
-    // await axios.post(urlLocation, {
-    //     // chat_id: -1002036778710,
-    //     chat_id: -1002025697043,
-    //     latitude: req.body[3],
-    //     longitude: req.body[2],
-    // })
-    // .then((res) => {
-    //     // console.log(res.data)
-    //     // console.log("MessageID: " + res.data.result.message_id)
-    //     location_message_id = res.data.result.message_id
-    // })
-    // .catch((err) => {
-    //     console.log(err)
-    // })
+    await axios.post(urlLocation, {
+        // chat_id: -1002036778710,
+        chat_id: -1002025697043,
+        latitude: req.body[3],
+        longitude: req.body[2],
+    })
+    .then((res) => {
+        // console.log(res.data)
+        // console.log("MessageID: " + res.data.result.message_id)
+        location_message_id = res.data.result.message_id
+    })
+    .catch((err) => {
+        console.log(err)
+    })
 
-    // const someData = await axios.post(url, {
-    //     // chat_id: -1002036778710,
-    //     chat_id: -1002025697043,
-    //     parse_mode: 'html',
-    //     text: message,
-    //     reply_to_message_id: location_message_id
-    // })
-    // .then((res) => {
-    //     // console.log(res.data)
-    // })
-    // .catch((err) => {
-    //     console.log(err)
-    // })
+    const someData = await axios.post(url, {
+        // chat_id: -1002036778710,
+        chat_id: -1002025697043,
+        parse_mode: 'html',
+        text: message,
+        reply_to_message_id: location_message_id
+    })
+    .then((res) => {
+        // console.log(res.data)
+    })
+    .catch((err) => {
+        console.log(err)
+    })
 
     console.log("Total: " + allCost)
     return res.json("nice")
